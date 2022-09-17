@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import Memo from "./memo/Memo";
+import Comp from "./compon";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <>
-    <Memo />
+    <Comp />
   </>
 );
