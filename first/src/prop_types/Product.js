@@ -4,8 +4,8 @@ const Product = ({ image, name }) => {
   const url = image && image.url;
   return (
     <article>
-      <h4>{name}</h4>
-      <h4> {name}</h4>
+      <h4> {name} </h4>
+      <h4> {name} </h4>
     </article>
   );
 };

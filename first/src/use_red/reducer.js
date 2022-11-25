@@ -1,4 +1,4 @@
-import { useState, useReducer, useEffect } from "react";
+import { useEffect } from "react";
 import Index from "./index";
 const Red = ({ modalContent, closeModal }) => {
   useEffect(() => {
