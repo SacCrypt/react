@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./static/css/home.css";
+import { Link } from "react-router-dom";
 
 const Item = (props) => {
   return (
@@ -17,6 +18,7 @@ const Item = (props) => {
     </>
   );
 };
+
 const Navbar = () => {
   const [state, setState] = useState(false);
   const condition = () => {
@@ -29,6 +31,7 @@ const Navbar = () => {
         rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Sofia"
       ></link>
+
       <ul>
         <div className="Logo">
           <li>
@@ -45,7 +48,7 @@ const Navbar = () => {
           </li>
         </div>
         <li>
-          <a href="/#">Book</a>
+          <Link to={"/#"}> Book </Link>
         </li>
         <li>
           <a href="/#">Buy</a>
@@ -58,10 +61,10 @@ const Navbar = () => {
         </li>
         <div id="sign-up" className="sign-log">
           <li>
-            <a href="/#">Sign Up</a>
+            <Link to={"/signup"}> Sign Up </Link>
           </li>
           <li>
-            <a href="/#">Login</a>
+            <Link to={"/login"}> Login </Link>
           </li>
         </div>
         <div className="borgir">

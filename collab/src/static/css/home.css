@@ -93,6 +93,9 @@ svg:hover rect{
     fill: gray;
 }
 
+.nav-bar {
+    margin-bottom: 50px;
+}   
 .nav-bar ul {
     margin-top: 15px;
 }
@@ -110,7 +113,7 @@ svg:hover rect{
 
 .Logo {
     display: inline;
-    margin-right: 8em;
+    margin-right: 7em;
 }
 
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import woman_wall from "./static/images/woman_wall.jpg";
 import haircut from "./static/images/haircut.jpeg";
 import man_wall from "./static/images/man_wall.jpeg";
@@ -12,6 +12,7 @@ import "./static/css/home.css";
 const Home = () => {
   return (
     <>
+      {" "}
       <div className="wallpaper">
         <link
           href="https://fonts.googleapis.com/css?family=Lobster"
