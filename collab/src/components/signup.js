@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 /*import logo from "./static/images/Logo.png";*/
-import style from "./static/css/signup.module.css";
+import style from "../static/css/signup.module.css";
 import Radio from "./radio";
 
 const Signup = () => {

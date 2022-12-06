@@ -1,7 +1,6 @@
 import { useState } from "react";
-import style from "./static/css/signup.module.css";
+import style from "../static/css/signup.module.css";
 const Radio = (person) => {
-  const genderObj = person.gender;
   const [gender, setGender] = useState("");
   const handleRadio = (string) => {
     setGender(string);

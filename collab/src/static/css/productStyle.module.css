@@ -1,0 +1,59 @@
+.container{
+    left:17em;
+    margin-right: 100px;
+    position: relative;
+    bottom: 54em;
+    height: 125em;
+    border-radius: 10px;
+    width: 53em;
+    border: 2px solid black;
+}
+
+.sexBox{
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+    flex-wrap: wrap;
+}
+
+.sexBox img{
+    width:200px;
+    height:200px;
+    border: 5px solid black;
+}
+
+.sexBox div{
+    padding: 20px;
+    
+}
+
+.sexBox div h2{
+    width: 8em;
+    word-wrap: break-word;
+}
+
+
+svg{
+    fill: white;
+    stroke: black;
+}
+
+.star1{
+    fill: #FFFF99;
+}
+
+.star2{
+    fill: #FFFF99;
+}
+
+.star3 {
+    fill: #FFFF99;
+}
+.star4 {
+    fill: #FFFF99;
+}
+
+.star5 {
+    fill: #FFFF99;
+}
+

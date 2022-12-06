@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "./static/css/home.css";
+import { useState } from "react";
+import "../static/css/home.css";
 import { Link } from "react-router-dom";
 
 const Item = (props) => {
@@ -51,7 +51,7 @@ const Navbar = () => {
           <Link to={"/#"}> Book </Link>
         </li>
         <li>
-          <a href="/#">Buy</a>
+          <a href="/Buy">Buy</a>
         </li>
         <li>
           <a href="/#">Virtual Hair</a>

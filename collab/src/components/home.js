@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import woman_wall from "./static/images/woman_wall.jpg";
-import haircut from "./static/images/haircut.jpeg";
-import man_wall from "./static/images/man_wall.jpeg";
-import stylist from "./static/images/stylist.jpg";
-import products from "./static/images/products.png";
-import specialist from "./static/images/specialist.jpg";
-import hairgame from "./static/images/hairgame.jpeg";
-import logo from "./static/images/Logo.png";
-import "./static/css/home.css";
+import woman_wall from "../static/images/woman_wall.jpg";
+import haircut from "../static/images/haircut.jpeg";
+import man_wall from "../static/images/man_wall.jpeg";
+import stylist from "../static/images/stylist.jpg";
+import products from "../static/images/products.png";
+import specialist from "../static/images/specialist.jpg";
+import hairgame from "../static/images/hairgame.jpeg";
+import logo from "../static/images/Logo.png";
+import "../static/css/home.css";
 
 const Home = () => {
   return (

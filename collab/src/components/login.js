@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import style from "./static/css/login.module.css";
+import { useState } from "react";
+import style from "../static/css/login.module.css";
 import { Link } from "react-router-dom";
 
 const Login = () => {

@@ -1,0 +1,41 @@
+.root{
+    width: 15.8em;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-left: 10px;
+    border: 2px solid black;
+    width: 15em;
+    height: 54em;
+    border-radius: 10px;
+    background-color: black;
+}
+
+.container div{
+    position: relative;
+    top: 6em;
+}
+
+.container > div span{
+    color: white;
+}
+
+.logo{
+    top:2em;
+    left: 1.5em;
+    font-size: 32px;
+    position:relative;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: white;
+}
+
+.container div{
+    border: 2px solid white;
+    border-radius: 6px;
+    width: 12em;
+    padding: 10px;
+    margin-left: 1em;
+    margin-top: 1em
+}
