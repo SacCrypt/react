@@ -1,0 +1,97 @@
+.outer{
+    margin-top: 50px;
+    background-color: black;
+    height: 22rem;
+    width: 28rem;
+    margin-left: 300px;
+    position: relative;
+}
+
+.outer h2{
+    margin-left: 100px;
+    color: wheat;
+    padding:10px;
+    width: 210px;
+}
+
+.inner{
+    margin-left:75px;
+    margin-top: 20px;
+    width: 16em;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.butSub{
+    margin-left:90px;
+    width: 60px;
+    background-color: orange;
+    color: white;
+    margin-top: 20px;
+    padding: 5px;
+}
+
+.warning{
+    height: 30px;
+    width: 30px;
+    margin-top: 10px;
+    position:absolute;
+    top:1%;
+    left:61%;
+}
+
+.inner input{
+    width: 250px;
+    margin-top: 10px;
+    margin-left: 5px;
+    padding:10px;
+    margin-bottom: 10px;
+}
+
+.error{
+    margin-left: 10px;
+    width: 500px;
+    color: red;
+}
+
+.outermost{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+    margin-top: 10px;
+}
+
+.container {
+    flex-direction: column;
+    display: flex;
+    margin:auto;
+    border: 2px solid black;
+    width: 30em; 
+    padding: 1em; 
+    gap: 1em;
+}
+
+.container input{
+    width: 90%;
+    padding: 5px;
+}
+
+.container select{
+    width: 100px;
+    padding: 5px;
+}
+
+.addBut{
+    width: 100px;
+    align-self: center;
+}
+
+.required::after{
+    content: "*";
+    color: red;
+}
+
+
+

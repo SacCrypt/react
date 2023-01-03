@@ -1,0 +1,81 @@
+.mainland{
+    background-color: black;
+    position: relative;
+    padding-bottom: 3em;
+}
+
+.header1{
+    padding-top: 30px;
+    width: 8em;
+    margin-left: 2em;
+    font-weight: 1000;
+}
+
+.header3{
+    width: 25em;
+    margin-left: 4em;
+    margin-top: 1em;
+    font-size: medium;
+    font-weight: 400;
+    letter-spacing:.5px
+}
+
+.without{
+    color: #d4f211;
+}
+
+.landButton{
+    background-color:#d4f211 ;
+    border-radius: 7px;
+    color: black;
+    margin-left: 4.5em;
+    margin-top: 3em;
+    padding: 12px;
+    font-weight: bolder;
+    width: 9;
+    border: 2px solid black;
+    cursor: pointer;
+}
+
+.flex{
+    display: flex;
+    width: 50em;
+    justify-content: space-evenly;
+    margin-left: 1em;
+    margin-top: 5em;
+}
+
+.number{
+    color: #d4f211;
+    font-size: 2em;
+    font-weight: bolder;
+    margin-left: 1em;
+}
+
+.imageContainer{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 2%;
+    left: 80%;
+    gap: 6em;
+    align-items:center;
+    
+}
+
+.imageContainer img{
+    width: 9em;
+    border: 6px solid #282828;
+    border-radius: 10px;
+}
+
+.image1{
+    position: absolute;
+    top:32%;
+    right: 120%;
+}
+
+
+
+
+

@@ -12,6 +12,7 @@ const Fetch = () => {
   useEffect(() => {
     getUsers();
   }, []);
+
   return (
     <div>
       {users.map((user) => {
