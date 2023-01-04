@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;800&display=swap');
+
+.outerContainer{
+    background-color: black;
+    margin-top: 2em;
+    overflow: auto;
+    position: relative;
+    padding-bottom: 5em;
+}
+
+.outerContainer h1{
+    font-weight: bolder;
+    margin-left: 9em;
+    margin-top: 1em;
+    font-weight: 800;
+}
+
+.outerContainer h1::before{
+    content: "#1 Platform";
+    background-image: linear-gradient(90deg,
+            #d4f211,
+            #34ebde);
+    background-clip: text;
+    color: transparent;
+}
+
+.outerContainer p{
+    text-transform: capitalize;
+    margin-left: 16em;
+    letter-spacing: 1px;
+    width: 22em;
+    word-wrap: break-word;
+    font-size: large;
+    text-align: center;
+    margin-top: 1em;
+    font-weight: 500;
+}
+
+.outerContainer button {
+    text-transform: uppercase;
+    background-color: #d4f211;
+    color: black;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    width: 15em;
+    margin-left: 28.9em;
+    margin-top: 12em;
+    font-weight: 800;
+    border-radius: 12px;
+}
+
+.outerContainer img{
+    width: 7em;
+    height: 7em;
+    position: absolute;
+    border: 2px solid b;
+}
+
+.first{
+    z-index: 1;
+    right: 75%;
+}
+
+.second{  
+    z-index: 0;
+    right: 80%;
+    bottom: 100px;
+    left: 50px;
+    opacity: 0.2;
+}
+
+.third{
+    z-index: 1;
+    right: 215px;
+}
+
+.fourth{
+    z-index: 0;
+    right: 7em;
+    bottom: 100px;
+    opacity: 0.2;
+    
+}
+
+.best{
+    color: black;
+    background-color: tomato;
+    width: 10em;
+    text-align: center;
+    margin-left: 25em;
+    clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%);
+    padding: 10px;
+    text-transform: capitalize;
+    margin-top: 2em;
+}

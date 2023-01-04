@@ -1,0 +1,137 @@
+.container {
+    overflow: auto;
+    position: relative;
+}
+
+.container h1{
+    text-transform: capitalize;
+    margin-left: 11em;
+    margin-top: 3em;
+}
+
+.container h1::after{
+    content: "We Offer";
+    background-image: linear-gradient(90deg,
+            #d4f211,
+            #34ebde);
+    background-clip: text;
+    color: transparent;
+}
+
+.container h3{
+    color: rgba(255, 255, 255, 0.3);
+    margin-left: 14em;
+    margin-top: 0.5em;
+}
+
+.contract{
+    border-radius: 100%;
+    border: 6px solid black;
+    width: 5em;
+    height: 5em;
+    position: absolute;
+    left:78.5%;
+}
+
+.blackLine{
+    height: 15em;
+    border-left: 6px dotted black;
+    position: absolute;
+    width: 1em;
+    left:82.5%;
+    top: -10%;
+}
+
+.secondBlackLine{
+    height: 5em;
+    border-left: 6px dotted black;
+    position: absolute;
+    width: 1em;
+    left: 82.5%;
+    top: 36%;
+}
+
+.contract svg{
+    width: 3em;
+    height: 3em;
+    margin-left: 1.5em;
+    margin-top: 1em;
+    fill: white;
+}
+
+.flexContainer{
+    display: flex;
+    gap: 2em;
+    margin-top: 10em;
+    justify-content: center;
+}
+
+.innerContainer{
+    width: 22em;
+    height: 22em;
+    border-radius: 20px;
+    background: rgba(15, 15, 15, 0.6);
+    padding: 15px;
+}
+
+.innerContainer *{
+    margin-top: 15px;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+    font-size: 12px;
+}
+
+.innerContainer ul{
+    list-style:none;
+}
+
+.innerContainer ul li{
+    margin-top: 3em;
+}
+
+
+.innerContainer ul li::before{
+    content: "\2022";
+    background-color: #d4f211;
+    font-weight: bold;
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    margin-left: -2em;
+    border-radius: 150px;
+    margin-right: 1em;
+    color: #d4f211;
+}
+
+.innerContainer h2 + p{
+    padding-left: 10px;
+    padding-right: 1px;
+    margin-bottom: 3em;
+    margin-top: 3em;
+    
+}
+
+.innerContainer h2{
+    color: #d4f211;
+    text-align: center;
+    width: 60%;
+    margin-left: 2.5em;
+    font-size: 20px;
+}
+
+.special{
+    border: 4px solid;
+    border-image: linear-gradient(90deg,
+            #d4f211,
+            #34ebde) 1;
+}
+/*
+.wrap{
+    width: inherit;
+    height: inherit;
+    background-image: linear-gradient(90deg,
+            #d4f211,
+            #34ebde);
+    padding: 3px;  
+}
+*/
