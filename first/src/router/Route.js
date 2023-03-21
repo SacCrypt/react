@@ -1,0 +1,18 @@
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./Home";
+import About from "./About";
+import Error from "./Error";
+const Nav = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/error" element={<Error />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+export default Nav;

@@ -1,0 +1,198 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.wallpaper{
+    margin-top: 100px;
+    border: 2px solid black;
+    border-radius: 5px;
+    display:flex;
+    justify-content:space-between;
+    background: linear-gradient(lightyellow, wheat);
+}
+
+.wallpaper img{
+    width:35%;
+    height: 300px;    
+}
+
+#logo{
+    width: 250px;
+    height: 300px;
+}
+
+.nav-bar{
+    display:flex;
+    justify-content: space-around;
+    background-color: black;
+    align-items: center;
+    height:4rem;
+    width: 100%;
+}
+
+rect{
+    stroke: white;
+    fill: white;
+}
+
+.borgir{
+    display: inline;
+    position: relative;  
+}
+
+.drop-down-items{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: -250px;
+    right: 20px;
+    padding: 20px;
+    border: 2px solid white;
+    background-color: #030303;
+    transition-property: top;
+    transition-duration: 1s;
+    z-index: 0;
+}
+
+.show-drop {
+    top: 25px;
+}
+
+.drop-down-items div{
+    border: 2px solid white;
+    margin-top: 10px;
+    width: 125px;
+    padding: 5px;
+}
+
+.drop-down-items div a{
+    text-decoration: none;
+    color: white;
+    font-family: 'Lobster';
+    font-size: 12px;
+}
+
+.drop-down-items div:hover{
+    background-color: wheat;
+}
+
+.drop-down-items div:hover a{
+    color: black;
+}
+
+svg:hover{
+    cursor:pointer;
+}
+
+svg:hover rect{
+    fill: gray;
+}
+
+ 
+.nav-bar ul {
+    margin-top: 10px;
+}
+
+.nav-bar ul li{
+    display: inline;
+    padding: 25px;
+}
+
+.nav-bar ul li a{
+    font-family: "Sofia", sans-serif;
+    text-decoration: none;
+    color: white; 
+    width: 75px;
+    text-align: center;
+}
+
+.Logo {
+    display: inline;
+    margin-right: 7em;
+}
+
+
+.sign-log{
+    display: inline;
+    margin-left: 70px;
+}
+
+.Logo li a{
+    font-size: 20px;
+}
+
+
+.sign-log a {
+    padding: 5px;
+    border: 2px solid white;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+#sign-up a:hover {
+    background-color: wheat;
+    color: black;
+}
+
+.nav-bar ul li a:hover {
+    color: gray;
+}
+
+.tool-tip{
+    visibility: hidden;
+    color: black;
+    background-color: white;
+    border-radius: 6px;
+}
+
+.tool-tip:hover {
+    visibility: visible;
+}
+
+.alternate{
+    width:min(550px, 95%);
+    margin: 3rem auto 3rem auto;
+    display:flex;
+    gap: 4rem;
+    flex-direction: column;
+    align-items: center;
+}
+
+.alternate p {
+    font-family: Lobster, sans-serif;
+    white-space: pre-line;
+    font-size: 24px;
+    padding: 10px;
+    background-color: wheat;
+    color: #703a23;
+}
+
+.alternate p a{
+    text-decoration: none;
+    color: black;
+}
+
+.alternate img{
+    width: 35vw;
+    height: 25vw;
+}
+
+.alternate div{
+    border: 2px solid black;
+    border-radius: 5px;
+    gap: 2rem;
+    display:flex;
+}
+
+.alternate div:nth-child(even){
+    flex-direction: row-reverse;
+}
+
+@media screen and (max-width: 550px){
+    .nav-bar ul li{
+        display: none;
+    }
+}
+

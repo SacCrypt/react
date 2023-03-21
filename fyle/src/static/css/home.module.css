@@ -1,0 +1,211 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Lora', serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital@1&display=swap');
+
+.headerContainer{   
+    height: 30rem;
+    background-color: #08170b;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.headerContainer * {
+    color: white;
+}
+
+.headerContainer h3{
+    width: 50%;
+    text-align: center;
+    font-size: 1em;
+}
+
+.headerContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.logoFlex{
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 1em;
+}
+
+.searchField{
+    width: 20em;
+    padding: 10px;
+    margin-top: 4em;
+    background-image: url("../images/magnifying.webp");
+    background-size: 10%;
+    background-repeat: no-repeat;
+    background-position: 5%;
+    color: black;
+    border-radius: 15px;
+    caret-color: transparent;
+    font-size: medium;
+}
+
+.searchField:focus{
+    outline: 4px solid #FF2E63;
+}
+
+.searchField::placeholder{
+    color: black;
+    text-align: center;
+    font-weight:500;
+    font-size:medium;
+}
+
+.radioFlex{
+    margin-top: 1em;
+    display: flex;
+    gap: 2em;
+    
+}
+
+.radioFlex * {
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+.radioButton{
+    appearance: none;
+    border-radius: 150%;
+    border: 0.1rem solid #fff;
+}
+
+.radioButton:checked{
+    box-shadow: 0 0 0 .5px #FF2E63;
+    background-color: #FF2E63;
+    border-width: 0.3rem;
+}
+
+.radioButton:focus-visible {
+    outline-offset: 0;
+}
+
+.radioLabel{
+    font-size: larger;
+}
+
+.subjectList{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    position:absolute;
+    top:100px;
+    background-color: #FF2E63;
+    border-radius: 15px;
+    align-items: center;
+    left: 25px;
+    
+}
+
+.subjectTitle {
+    font-size: 20px;
+    background-color: #2572e6;
+    padding-right: 2.5em;
+    padding-left: 2.5em;
+    padding-top: .5em;
+    padding-bottom: 1.5em; 
+    
+}
+
+.individualSubjects{
+    padding: 1em;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.individualSubjects:hover{
+    background-color: #f50c47;
+    border-radius: 15px;
+}
+
+.individualSubjects:hover > a{
+    color: black;
+}
+
+.individualSubjects a {
+    text-decoration: none;
+    font-size: large;
+    color: white;
+}
+
+.individualSubjects a:hover{
+    color: black;
+}
+
+.title{
+    position: absolute;
+    top:10px;
+    left: 10px;
+    color: white;
+    
+}
+
+.tableContainer{
+    margin-top: 4em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    table-layout: fixed;
+    width: 75vw;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+th, td{
+    padding: 1em;
+    text-align: center;
+}
+
+th{
+   background-color:#08170b;
+   color: white;
+}
+
+td{
+    border: 1px solid #08170b;
+}
+
+.table{
+    border-collapse: collapse;
+}
+
+.traverseHolder{
+    display: flex;
+    justify-content:space-between;
+    width: 85%;
+    margin-top: 2em;
+}
+
+.traverse{
+    padding: 15px;
+    background-color:#FF2E63;
+    border-radius: 15px;
+    width: 10em;
+    color: white;
+    font-size: large;
+    cursor: pointer;
+}
+
+.traverse:hover{
+    background-color:#f50c47;
+    color: black;
+}
+

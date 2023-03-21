@@ -1,0 +1,69 @@
+.container{
+    left:14em;
+    margin-right: 100px;
+    position: relative;
+    bottom: 54em;
+    height: 125em;
+    border-radius: 10px;
+    width: 50em;
+    border: 2px solid black;
+}
+
+.sexBox{
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    flex-wrap: wrap;
+    
+}
+
+.sexBox img{
+    width:150px;
+    height:150px;
+    border: 5px solid black;
+}
+
+.sexBox div{
+    padding: 20px;
+    
+}
+
+.sexBox div h2{
+    width: 8em;
+    word-wrap: break-word;
+}
+
+.innerContainer {
+    width: 13em
+}
+
+
+.innerContainer svg{
+    stroke: black;
+    fill: white;
+}
+
+#star1{
+    fill: gold
+}
+
+#star2{
+    fill: gold
+}
+
+#star3 {
+    fill: gold
+}
+
+#star4 {
+    fill: gold
+}
+
+#star5 {
+    fill: gold
+}
+
+.productName{
+    word-wrap: break-word;
+}
+
