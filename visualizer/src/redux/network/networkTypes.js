@@ -1,0 +1,6 @@
+export const types = {
+  ADD_EDGE: "ADD_EDGE",
+  DELETE_EDGE: "DELETE_EDGE",
+  ADD_NODE: "ADD_NODE",
+  DELETE_NODE: "DELETE_NODE",
+};

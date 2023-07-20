@@ -52,6 +52,27 @@ import {
   ListItemIcon,
   ListItemAvatar,
   ListItemButton,
+  Chip,
+  Tooltip,
+  TableContainer,
+  TableHead,
+  Table,
+  TableRow,
+  TableCell,
+  TableBody,
+  Alert,
+  AlertTitle,
+  Snackbar,
+  AlertProps,
+  Dialog,
+  DialogTitle,
+  DialogContentText,
+  DialogActions,
+  DialogContent,
+  LinearProgress,
+  CircularProgress,
+  Skeleton,
+  Tab,
 } from "@mui/material";
 import {
   Mail,
@@ -73,18 +94,50 @@ import {
   Edit,
   Home,
   Person,
+  Delete,
+  Check,
+  Save,
 } from "@mui/icons-material";
+
 import MenuIcon from "@mui/icons-material/Menu";
-import React, { useState } from "react";
+import React, { useState, forwardRef, useEffect } from "react";
+import {
+  Masonry,
+  TabContext,
+  TabList,
+  TabPanel,
+  LoadingButton,
+  DateRangePicker,
+  DatePicker,
+  TimePicker,
+  Timeline,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineContent,
+  TimelineDot,
+  TimelineConnector,
+  TimelineOppositeContent,
+} from "@mui/lab";
 
 export const MuiTypography = () => {
-  const [formats, setFormats] = useState<string[] | null>(null);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  });
+  const SnackBarAlert = forwardRef<HTMLDivElement, AlertProps>((props, ref) => (
+    <Alert elevation={6} ref={ref} {...props} />
+  ));
   const handleFormatChange = (
     _event: React.MouseEvent<HTMLElement>,
     updatedFormats: string[] | null
   ) => {
     setFormats(updatedFormats);
   };
+  const [formats, setFormats] = useState<string[] | null>(null);
+  const heights = [
+    150, 30, 90, 70, 110, 150, 130, 80, 50, 90, 100, 150, 30, 50, 80,
+  ];
   const [state, setState] = useState("");
   const [country, setCountry] = useState<string[]>([]);
   const [value, setValue] = useState("");
@@ -96,27 +149,114 @@ export const MuiTypography = () => {
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
   const [drawer, setDrawer] = useState(false);
   const [bottom, setBottom] = useState(0);
+  const [snack, setSnack] = useState(false);
+  const [openDialog, setDialog] = useState(false);
   const open = Boolean(anchor);
-
+  const [loading, setLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState<Date | null>(null);
+  const [tab, setTab] = useState("1");
+  const tableData = [
+    {
+      id: 1,
+      first_name: "Chrotoem",
+      last_name: "Meineking",
+      email: "cmeineking0@webnode.com",
+      gender: "Genderfluid",
+      ip_address: "9.127.71.110",
+    },
+    {
+      id: 2,
+      first_name: "Gregorio",
+      last_name: "Presser",
+      email: "gpresser1@engadget.com",
+      gender: "Male",
+      ip_address: "91.245.144.219",
+    },
+    {
+      id: 3,
+      first_name: "Sue",
+      last_name: "Kohring",
+      email: "skohring2@cnbc.com",
+      gender: "Female",
+      ip_address: "194.248.70.186",
+    },
+    {
+      id: 4,
+      first_name: "Vernon",
+      last_name: "Ricardin",
+      email: "vricardin3@ca.gov",
+      gender: "Male",
+      ip_address: "19.175.228.12",
+    },
+    {
+      id: 5,
+      first_name: "Mordecai",
+      last_name: "Lowndesbrough",
+      email: "mlowndesbrough4@yolasite.com",
+      gender: "Male",
+      ip_address: "91.130.41.47",
+    },
+    {
+      id: 6,
+      first_name: "Kaylee",
+      last_name: "Lepope",
+      email: "klepope5@usnews.com",
+      gender: "Female",
+      ip_address: "16.15.79.108",
+    },
+    {
+      id: 7,
+      first_name: "Simone",
+      last_name: "Doulton",
+      email: "sdoulton6@ehow.com",
+      gender: "Male",
+      ip_address: "164.186.22.77",
+    },
+    {
+      id: 8,
+      first_name: "Chan",
+      last_name: "Dumphries",
+      email: "cdumphries7@so-net.ne.jp",
+      gender: "Male",
+      ip_address: "41.103.134.128",
+    },
+    {
+      id: 9,
+      first_name: "Candi",
+      last_name: "Ravillas",
+      email: "cravillas8@europa.eu",
+      gender: "Female",
+      ip_address: "158.76.120.129",
+    },
+    {
+      id: 10,
+      first_name: "Josy",
+      last_name: "Driver",
+      email: "jdriver9@reuters.com",
+      gender: "Female",
+      ip_address: "52.192.230.60",
+    },
+  ];
   const images = [
     {
-      img: "https://example.com/image1.jpg",
+      img: "https://picsum.photos/200/400",
       title: "Beautiful sunset at the beach",
     },
     {
-      img: "https://example.com/image2.jpg",
+      img: "https://picsum.photos/200/500",
       title: "Snowy mountains in winter",
     },
     {
-      img: "https://example.com/image3.jpg",
+      img: "https://picsum.photos/200/600",
       title: "Vibrant city skyline at night",
     },
     {
-      img: "https://example.com/image4.jpg",
+      img: "https://picsum.photos/200/700",
       title: "Adorable puppy playing in the grass",
     },
     {
-      img: "https://example.com/image5.jpg",
+      img: "https://picsum.photos/200/800",
       title: "Colorful hot air balloons in the sky",
     },
   ];
@@ -639,6 +779,336 @@ export const MuiTypography = () => {
             <ListItemText secondary="Secondary Text" primary="List item 3" />
           </ListItem>
         </List>
+      </Box>
+      <Stack direction="row" spacing={1}>
+        <Chip label="chip" size="small" color="primary" />
+        <Chip
+          variant="outlined"
+          label="chip outlined"
+          size="small"
+          color="secondary"
+          avatar={<Avatar> V </Avatar>}
+        />
+        <Chip
+          label="Click"
+          color="success"
+          onClick={() => alert("Jews are coming")}
+          icon={<Favorite />}
+        />
+        <Chip
+          label="Delete"
+          color="error"
+          onClick={() => alert("clicked")}
+          onDelete={() => alert("Deleted")}
+        />
+      </Stack>
+      <Tooltip
+        enterDelay={500}
+        leaveDelay={200}
+        arrow
+        placement="right"
+        title="Delete"
+      >
+        <IconButton>
+          <Delete />
+        </IconButton>
+      </Tooltip>
+
+      <TableContainer component={Paper} sx={{ maxHeight: "300px" }}>
+        <Table stickyHeader aria-label="simple table">
+          <TableHead>
+            {" "}
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>First Name</TableCell>
+
+              <TableCell>Last Name</TableCell>
+
+              <TableCell align="center"> Email </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {tableData.map((row) => {
+              return (
+                <TableRow
+                  key={row.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>{row.id}</TableCell>
+                  <TableCell>{row.first_name}</TableCell>
+                  <TableCell>{row.last_name}</TableCell>
+                  <TableCell align="center">{row.email}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Stack spacing={2}>
+        <Alert variant="outlined" severity="error">
+          <AlertTitle>Error</AlertTitle>
+          Error Alert
+        </Alert>
+        <Alert
+          onClose={() => alert("WTF NIGGA")}
+          variant="filled"
+          severity="warning"
+        >
+          Warning Alert
+        </Alert>
+        <Alert
+          action={
+            <Button color="inherit" size="small">
+              UNDO
+            </Button>
+          }
+          severity="info"
+        >
+          Info Alert
+        </Alert>
+        <Alert severity="success">Success Alert</Alert>
+        <Alert icon={<Check />} severity="success">
+          Success Alert
+        </Alert>
+      </Stack>
+      <>
+        <Button onClick={() => setSnack(true)}>Submit</Button>
+        <Snackbar
+          message="Big Balls Gang wya"
+          autoHideDuration={4000}
+          open={snack}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          onClose={(e, reason) => {
+            if (reason === "clickaway") {
+              return;
+            }
+            setSnack(false);
+          }}
+        />
+        <Snackbar
+          open={snack}
+          autoHideDuration={6000}
+          onClose={(e, reason) => {
+            if (reason === "clickaway") {
+              return;
+            }
+            setSnack(false);
+          }}
+        >
+          <SnackBarAlert severity="success"> Custom </SnackBarAlert>
+        </Snackbar>
+      </>
+      <>
+        <Button onClick={() => setDialog(true)}>Open Dialog</Button>
+        <Dialog
+          onClose={() => setDialog(false)}
+          open={openDialog}
+          aria-leballedby="dialog-title"
+        >
+          <DialogTitle id="dialog-title" aria-describedby="dialog-description">
+            Submit ?
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="dialog-description">
+              Sure negro ?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDialog(true)} autoFocus>
+              Submit
+            </Button>
+            <Button onClick={() => setDialog(true)}>Cancel</Button>
+          </DialogActions>
+        </Dialog>
+      </>
+      <Stack spacing={2}>
+        <CircularProgress color="success" variant="determinate" value={60} />
+        <CircularProgress color="success" />
+        <LinearProgress color="success" variant="determinate" value={60} />
+        <LinearProgress color="success" />
+      </Stack>
+
+      <Stack spacing={1} width="250px">
+        <Skeleton variant="circular" width={40} height={40} />
+        <Skeleton
+          variant="rectangular"
+          width={250}
+          height={250}
+          animation="wave"
+        />
+      </Stack>
+
+      <Box sx={{ width: "250px" }}>
+        {loading ? (
+          <Skeleton
+            variant="rectangular"
+            width={256}
+            height={144}
+            animation="wave"
+          />
+        ) : (
+          <img
+            src="https://source.unsplash.com/random/256x144"
+            alt="Skeleton"
+            width={256}
+            height={144}
+          />
+        )}
+
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ width: "100%", marginTop: "12px" }}
+        >
+          {loading ? (
+            <Skeleton
+              variant="circular"
+              width={40}
+              height={40}
+              animation="wave"
+            />
+          ) : (
+            <Avatar> S </Avatar>
+          )}
+        </Stack>
+
+        <Stack sx={{ width: "80%" }}>
+          {loading ? (
+            <>
+              <Typography variant="body1">
+                <Skeleton variant="text" width="100%" animation="wave" />
+              </Typography>
+              <Typography variant="body2">
+                <Skeleton variant="text" width="100%" animation="wave" />
+              </Typography>
+            </>
+          ) : (
+            <>
+              <Typography variant="body1"> Balls </Typography>
+            </>
+          )}
+        </Stack>
+      </Box>
+      <Stack spacing={2} direction="row">
+        <LoadingButton variant="outlined">Submit</LoadingButton>
+        <LoadingButton loading variant="outlined">
+          Submit
+        </LoadingButton>
+        <LoadingButton
+          startIcon={<Save />}
+          variant="outlined"
+          loadingIndicator="Loading"
+        >
+          Balls
+        </LoadingButton>
+      </Stack>
+
+      {/* <Stack spacing={4} sx={{ width: "250px" }}>
+        <DatePicker
+          label="Date Picker"
+          renderInput={(p) => <TextField {...p} />}
+          onChange={(new) => setSelectedDate(new)}
+          value={selectedDate}
+        />
+      </Stack> */}
+      <Box>
+        <TabContext value={tab}>
+          <Box sx={{ width: "300px", borderBottom: 1, borderColor: "divider" }}>
+            <TabList
+              variant="scrollable"
+              scrollButtons="auto"
+              textColor="secondary"
+              indicatorColor="secondary"
+              onChange={(event, newVal) => setTab(newVal)}
+              aria-label="Tabs"
+            >
+              <Tab
+                icon={<Favorite />}
+                iconPosition="start"
+                label="Tab One"
+                value="1"
+              />
+              <Tab disabled label="Tab Two" value="2" />
+              <Tab label="Tab Three" value="3" />
+              <Tab label="Tab Four" value="4" />
+              <Tab label="Tab Five" value="5" />
+              <Tab label="Tab Six" value="6" />
+            </TabList>
+          </Box>
+          <TabPanel value="1">Panel One</TabPanel>
+          <TabPanel value="2">Panel Two</TabPanel>
+          <TabPanel value="3">Panel Three</TabPanel>
+          <TabPanel value="4">Panel Four</TabPanel>
+          <TabPanel value="5">Panel Five</TabPanel>
+          <TabPanel value="6">Panel Six</TabPanel>
+        </TabContext>
+      </Box>
+      <Timeline position="alternate">
+        <TimelineItem>
+          <TimelineSeparator>
+            <TimelineDot color="secondary" />
+            <TimelineConnector />
+          </TimelineSeparator>
+          <TimelineContent>City A</TimelineContent>
+        </TimelineItem>
+        <TimelineItem>
+          <TimelineSeparator>
+            <TimelineDot variant="outlined" />
+            <TimelineConnector />
+          </TimelineSeparator>
+          <TimelineContent>City B</TimelineContent>
+        </TimelineItem>
+        <TimelineItem>
+          <TimelineOppositeContent color="text.secondary">
+            9:30 AM
+          </TimelineOppositeContent>
+          <TimelineSeparator>
+            <TimelineDot />
+          </TimelineSeparator>
+          <TimelineContent>City C</TimelineContent>
+        </TimelineItem>
+      </Timeline>
+      <Box sx={{ width: 500, minHeight: 400 }}>
+        <Masonry columns={4} spacing={1}>
+          {heights.map((height, index) => (
+            <Paper
+              key={index}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                height,
+                border: "1px solid",
+                alignItems: "center",
+              }}
+            >
+              <Accordion sx={{ minHeight: height }}>
+                <AccordionSummary expandIcon={<ExpandMore />}>
+                  <Typography>Accordion {index + 1}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>Content</AccordionDetails>
+              </Accordion>
+              {index + 1}
+            </Paper>
+          ))}
+        </Masonry>
+      </Box>
+      <Box
+        sx={{
+          width: {
+            xs: 100, //when vw is 0 and above
+            sm: 200, //600
+            md: 300, //900
+            lg: 400, //1200
+            xl: 500, //1500
+          },
+          height: "300px",
+          bgcolor: "primary",
+        }}
+      >
+        {" "}
       </Box>
     </div>
   );

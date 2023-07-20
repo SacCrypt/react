@@ -1,0 +1,26 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: lightgray;
+  padding: 2%;
+  gap: 3em;
+}
+.mainContainer .node {
+  width: 50px;
+  height: 50px;
+}
+.mainContainer .node circle {
+  fill: #6042a1;
+  cursor: pointer;
+}
+.mainContainer .edge {
+  width: 50px;
+  height: 50px;
+}
+.mainContainer .edge line {
+  stroke: #6042a1;
+  stroke-width: 10%;
+  cursor: pointer;
+}/*# sourceMappingURL=panel.css.map */

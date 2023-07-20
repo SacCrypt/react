@@ -14,6 +14,7 @@ function buyIceCream() {
     info: "Redux Action",
   };
 }
+
 function buyCake() {
   return {
     type: BUY_CAKE,
