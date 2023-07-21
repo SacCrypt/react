@@ -11,6 +11,10 @@ $svg-height: 50px;
   background-color: lightgray;
   padding: 2%;
   gap: 3em;
+  svg {
+    fill: $primaryColor;
+    cursor: pointer;
+  }
   .node {
     width: $svg-width;
     height: $svg-height;

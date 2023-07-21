@@ -7,6 +7,10 @@
   padding: 2%;
   gap: 3em;
 }
+.mainContainer svg {
+  fill: #6042a1;
+  cursor: pointer;
+}
 .mainContainer .node {
   width: 50px;
   height: 50px;

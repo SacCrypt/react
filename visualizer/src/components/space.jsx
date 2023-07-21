@@ -27,7 +27,6 @@ const Space = () => {
 
   if (data.nodes.length && networkContainerRef.current) {
     const network = new Network(networkContainerRef.current, data, options);
-
     const inflateCircularNode = (nodeId) => {
       const { clientHeight, clientWidth } = networkContainerRef.current;
 
@@ -66,7 +65,7 @@ const Space = () => {
           style={{ width: "100%", height: "100%" }}
         ></div>
       ) : (
-        <NodeDesc data={data} nodeID={currentNode} />
+        <NodeDesc data={data} ID={currentNode} />
       )}
     </>
   );
