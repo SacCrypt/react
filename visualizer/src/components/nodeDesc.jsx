@@ -35,6 +35,7 @@ const NodeDesc = ({ data, ID }) => {
           height='24'
           viewBox='0 0 24 24'
           fill='white'
+          strokeWidth={3}
         >
           <path d='M3.00012 3L21.0001 21' stroke='white' />
           <path d='M21.0001 3L3.00012 21' stroke='white' />
@@ -63,6 +64,27 @@ const NodeDesc = ({ data, ID }) => {
                 </Button>
               );
             })}
+          </div>
+        </Typography>
+        <Typography>
+          <div className='groups'>
+            Groups:
+            <Button
+              className='groupButton'
+              variant='contained'
+              size='large'
+              sx={{
+                backgroundColor: "#6042a1",
+                borderRadius: "12px",
+                "&:hover": {
+                  backgroundColor: "white",
+                  color: "black",
+                  borderColor: "black",
+                },
+              }}
+            >
+              {node.group && "None"}
+            </Button>
           </div>
         </Typography>
       </div>

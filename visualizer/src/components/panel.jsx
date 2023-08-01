@@ -14,12 +14,13 @@ const Panel = ({ handleClean }) => {
     nodeDescription: "",
     edgeName: { from: "", to: "" },
     edgeWeight: "",
+    group: "",
   };
   const [inputObject, setInputObject] = useState(initialState);
   const [nodeIdentifier, setNodeIdentifier] = useState(1);
   const [edgeIdentifier, setEdgeIdentifier] = useState(1);
   const [activeModal, setActiveModal] = useState("");
-
+  const [displayEdit, setDisplayEdit] = useState(false);
   const state = useSelector((state) => state);
   const { nodes, edges } = state.present;
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const Panel = ({ handleClean }) => {
           id: nodeIdentifier,
           label: inputObject.nodeName,
           description: inputObject.nodeDescription,
+          group: inputObject.group,
         })
       );
       setInputObject(initialState);
@@ -186,61 +188,67 @@ const Panel = ({ handleClean }) => {
               display: "flex",
               alignItems: "center",
               padding: "1em",
+              cursor: "pointer",
+              justifyContent: "space-between",
             }}
           >
-            Create {activeModal}
+            <p onClick={() => setDisplayEdit(false)}> Create {activeModal}</p>
+            <p onClick={() => setDisplayEdit(true)}> Edit {activeModal} </p>
           </Box>
           {activeModal === "Node" ? (
-            <Box>
-              <Box display='flex' justifyContent='space-around'>
+            !displayEdit ? (
+              <Box>
+                <Box display='flex' justifyContent='space-around'>
+                  <TextField
+                    className='nodeName'
+                    required
+                    label='Node Name'
+                    onChange={(e) =>
+                      setInputObject({
+                        ...inputObject,
+                        nodeName: e.target.value,
+                      })
+                    }
+                    value={inputObject.nodeName}
+                    error={visited && !inputObject.nodeName}
+                  />
+                  <TextField
+                    sx={{
+                      width: "50%",
+                    }}
+                    label='Group'
+                    onChange={(e) =>
+                      setInputObject({ ...inputObject, group: e.target.value })
+                    }
+                    value={inputObject.group}
+                  />
+                </Box>
                 <TextField
-                  className='nodeName'
-                  required
-                  label='Node Name'
-                  onChange={(e) =>
-                    setInputObject({ ...inputObject, nodeName: e.target.value })
-                  }
-                  value={inputObject.nodeName}
-                  error={visited && !inputObject.nodeName}
-                />
-                <TextField
-                  disabled
+                  multiline
                   sx={{
-                    width: "50%",
+                    width: "100%",
+                    margin: "auto",
+                    padding: "2%",
                   }}
-                  select
-                  label='Select Relationship'
-                  defaultValue=''
-                >
-                  {nodes.length > 0 ? (
-                    nodes.map((node) => (
-                      <MenuItem key={node.id} value={node.label}>
-                        {node.label}
-                      </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem value=''>No Nodes Available</MenuItem>
-                  )}
-                </TextField>
+                  placeholder='Description'
+                  value={inputObject.nodeDescription}
+                  onChange={(e) =>
+                    setInputObject({
+                      ...inputObject,
+                      nodeDescription: e.target.value,
+                    })
+                  }
+                />
               </Box>
-              <TextField
-                multiline
-                sx={{
-                  width: "100%",
-                  margin: "auto",
-                  padding: "2%",
-                }}
-                placeholder='Description'
-                value={inputObject.nodeDescription}
-                onChange={(e) =>
-                  setInputObject({
-                    ...inputObject,
-                    nodeDescription: e.target.value,
-                  })
-                }
-              />
-            </Box>
-          ) : (
+            ) : (
+              <Box>
+                <TextField required label='Node Name' />
+                <TextField label='New Node Name' />
+                <TextField label='New Node Description' />
+                <TextField label='New Node Group' />
+              </Box>
+            )
+          ) : !displayEdit ? (
             <Box
               display='flex'
               flexDirection='column'
@@ -287,6 +295,8 @@ const Panel = ({ handleClean }) => {
                 value={inputObject.edgeWeight}
               />
             </Box>
+          ) : (
+            <TextField />
           )}
 
           <Box padding='2em' display='flex' justifyContent='flex-end'>
@@ -302,6 +312,7 @@ const Panel = ({ handleClean }) => {
               variant='text'
               onClick={() => {
                 setInputObject(initialState);
+                setDisplayEdit(false);
                 setOpen(false);
               }}
             >
@@ -314,7 +325,10 @@ const Panel = ({ handleClean }) => {
                   color: "white",
                 },
               }}
-              onClick={handleAdd}
+              onClick={() => {
+                setDisplayEdit(false);
+                handleAdd();
+              }}
               className='okButton'
               variant='text'
             >

@@ -27,6 +27,7 @@ const Space = () => {
 
   useEffect(() => {
     let network;
+
     const inflateCircularNode = (nodeId) => {
       const { clientHeight, clientWidth } = networkContainerRef.current;
       const node = data.nodes.get(nodeId);

@@ -45,4 +45,11 @@
 .mainNodeDiv .description .relations button:hover {
   background-color: white;
   color: black;
+}
+.mainNodeDiv .description .groups {
+  display: flex;
+  align-items: center;
+  font-weight: bolder;
+  gap: 1em;
+  padding: 2%;
 }/*# sourceMappingURL=nodeDesc.css.map */
