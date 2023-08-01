@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import "../static/css/nodeDesc.css";
 import { Button, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
+import Space from "./space";
 
 const NodeDesc = ({ data, ID }) => {
+  const [cancel, setCancel] = useState(true);
   const [nodeID, setNodeID] = useState(ID);
   const node = data.nodes.get(nodeID);
-  const { nodes, edges } = useSelector((state) => state);
+  const { nodes, edges } = useSelector((state) => state.present);
   const connectedNodeIds = data.edges
     .get({
       filter: (edge) => edge.from === nodeID || edge.to === nodeID,
@@ -23,32 +25,19 @@ const NodeDesc = ({ data, ID }) => {
     setNodeID(node.id);
   };
 
-  const handleCancel = () => {};
-  return (
+  return cancel ? (
     <div className='mainNodeDiv'>
       <div className='labelHeader'>
         <div>{node.label}</div>
         <svg
-          onClick={() => handleCancel()}
+          onClick={() => setCancel(false)}
           width='24'
           height='24'
           viewBox='0 0 24 24'
           fill='white'
         >
-          <path
-            d='M3.00012 3L21.0001 21'
-            stroke='white'
-            stroke-width='6'
-            stroke-linecap='round'
-            stroke-linejoin='round'
-          />
-          <path
-            d='M21.0001 3L3.00012 21'
-            stroke='white'
-            stroke-width='6'
-            stroke-linecap='round'
-            stroke-linejoin='round'
-          />
+          <path d='M3.00012 3L21.0001 21' stroke='white' />
+          <path d='M21.0001 3L3.00012 21' stroke='white' />
         </svg>
       </div>
       <div className='description'>
@@ -78,6 +67,8 @@ const NodeDesc = ({ data, ID }) => {
         </Typography>
       </div>
     </div>
+  ) : (
+    <Space />
   );
 };
 

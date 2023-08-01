@@ -27,3 +27,35 @@ export const deleteNode = (node) => {
     payload: node,
   };
 };
+
+export const clearNetwork = () => {
+  return {
+    type: types.CLEAR_NETWORK,
+  };
+};
+
+export const addNodes = (nodes) => {
+  return {
+    type: types.ADD_NODES,
+    payload: nodes,
+  };
+};
+
+export const addEdges = (edges) => {
+  return {
+    type: types.ADD_EDGES,
+    payload: edges,
+  };
+};
+
+export const undo = () => {
+  return {
+    type: types.UNDO,
+  };
+};
+
+export const redo = () => {
+  return {
+    type: types.REDO,
+  };
+};

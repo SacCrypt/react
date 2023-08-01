@@ -14,11 +14,16 @@
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "@types/timsort": "^0.3.0",
     "file-saver": "^2.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.1",
+    "react-router": "^6.14.2",
     "redux-logger": "^3.0.6",
+    "redux-undo": "^1.1.0",
+    "timsort": "^0.3.0",
+    "vis-data": "^7.1.6",
     "vis-network": "^9.1.6"
   },
   "devDependencies": {

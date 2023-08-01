@@ -23,7 +23,7 @@ const networkReducer = (state = initialState, action) => {
         };
       }
     case types.ADD_EDGE:
-      const { id, edge } = action.payload;
+      const { id, edge, edgeWeight } = action.payload;
       const updatedEdge = {
         ...edge,
         from: state.nodes.find(
@@ -31,6 +31,7 @@ const networkReducer = (state = initialState, action) => {
             node.label.toLowerCase() === edge.from || node.label === edge.from
         )?.id,
         to: state.nodes.find((node) => node.label === edge.to)?.id,
+        label: edgeWeight,
       };
       updatedEdge["id"] = id;
       return {
@@ -42,6 +43,21 @@ const networkReducer = (state = initialState, action) => {
         ...state,
         edges: state.edges.filter((item) => item !== action.payload),
       };
+    case types.ADD_NODES:
+      return {
+        ...state,
+        nodes: action.payload,
+      };
+    case types.ADD_EDGES:
+      return {
+        ...state,
+        edges: action.payload,
+      };
+    case types.CLEAR_NETWORK:
+      return {
+        ...initialState,
+      };
+
     default:
       return state;
   }

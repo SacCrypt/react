@@ -2,16 +2,18 @@ import React, { useRef, useState } from "react";
 import "../static/css/panel.css";
 import { Box, Button, MenuItem, Modal, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { addEdge, addNode } from "../redux/";
+import { addEdge, addNode, addNodes, addEdges } from "../redux/";
 import { saveAs } from "file-saver";
 
-const Panel = () => {
+const Panel = ({ handleClean }) => {
   const [open, setOpen] = useState(false);
   const [visited, setVisited] = useState(false);
+
   const initialState = {
     nodeName: "",
     nodeDescription: "",
     edgeName: { from: "", to: "" },
+    edgeWeight: "",
   };
   const [inputObject, setInputObject] = useState(initialState);
   const [nodeIdentifier, setNodeIdentifier] = useState(1);
@@ -19,7 +21,7 @@ const Panel = () => {
   const [activeModal, setActiveModal] = useState("");
 
   const state = useSelector((state) => state);
-  const { nodes, edges } = state;
+  const { nodes, edges } = state.present;
   const dispatch = useDispatch();
 
   const fileInputRef = useRef(null);
@@ -43,7 +45,13 @@ const Panel = () => {
     } else {
       if (inputObject.edgeName.from && inputObject.edgeName.to) {
         setEdgeIdentifier((id) => id + 1);
-        dispatch(addEdge({ id: edgeIdentifier, edge: inputObject.edgeName }));
+        dispatch(
+          addEdge({
+            id: edgeIdentifier,
+            edge: inputObject.edgeName,
+            edgeWeight: inputObject.edgeWeight,
+          })
+        );
         setInputObject(initialState);
         setOpen(false);
       } else {
@@ -57,7 +65,7 @@ const Panel = () => {
     let serializedState = null;
     try {
       serializedState = JSON.stringify(state, null, 2);
-    } catch (error) {
+    } catch (err) {
       console.error("Error while stringifying");
     }
     if (!serializedState) {
@@ -71,14 +79,32 @@ const Panel = () => {
     fileInputRef.current.click();
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      console.log(file);
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === "application/json") {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        try {
+          const parsedData = JSON.parse(reader.result);
+          setNodeIdentifier(
+            (identifier) => identifier + parsedData.nodes.length
+          );
+          setEdgeIdentifier(
+            (identifier) => identifier + parsedData.edges.length
+          );
+          dispatch(addNodes(parsedData.nodes));
+          dispatch(addEdges(parsedData.edges));
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
+      };
+
+      reader.readAsText(file);
+    } else {
+      console.error("Not a JSON file.");
     }
   };
-
-  const handleClean = () => {};
 
   return (
     <div className='mainContainer'>
@@ -131,6 +157,7 @@ const Panel = () => {
         ref={fileInputRef}
         style={{ display: "none" }}
         onChange={handleFileChange}
+        accept='.json'
       />
       <Modal className='modal' open={open} onClose={() => setOpen(false)}>
         <Box
@@ -177,6 +204,7 @@ const Panel = () => {
                   error={visited && !inputObject.nodeName}
                 />
                 <TextField
+                  disabled
                   sx={{
                     width: "50%",
                   }}
@@ -213,30 +241,50 @@ const Panel = () => {
               />
             </Box>
           ) : (
-            <Box display='flex' justifyContent='space-around'>
+            <Box
+              display='flex'
+              flexDirection='column'
+              alignItems='center'
+              gap='1em'
+            >
+              <Box display='flex' justifyContent='space-between' gap='2em'>
+                <TextField
+                  required
+                  label='From'
+                  onChange={(e) =>
+                    setInputObject({
+                      ...inputObject,
+                      edgeName: {
+                        ...inputObject.edgeName,
+                        from: e.target.value,
+                      },
+                    })
+                  }
+                  value={inputObject.edgeName.from}
+                  error={visited && !inputObject.edgeName.from}
+                />
+                <TextField
+                  required
+                  label='To'
+                  onChange={(e) => {
+                    return setInputObject({
+                      ...inputObject,
+                      edgeName: { ...inputObject.edgeName, to: e.target.value },
+                    });
+                  }}
+                  value={inputObject.edgeName.to}
+                  error={visited && !inputObject.edgeName.to}
+                />
+              </Box>
               <TextField
-                required
-                label='From'
-                onChange={(e) =>
-                  setInputObject({
-                    ...inputObject,
-                    edgeName: { ...inputObject.edgeName, from: e.target.value },
-                  })
-                }
-                value={inputObject.edgeName.from}
-                error={visited && !inputObject.edgeName.from}
-              />
-              <TextField
-                required
-                label='To'
+                label='Weight'
                 onChange={(e) => {
                   return setInputObject({
                     ...inputObject,
-                    edgeName: { ...inputObject.edgeName, to: e.target.value },
+                    edgeWeight: e.target.value,
                   });
                 }}
-                value={inputObject.edgeName.to}
-                error={visited && !inputObject.edgeName.to}
+                value={inputObject.edgeWeight}
               />
             </Box>
           )}
