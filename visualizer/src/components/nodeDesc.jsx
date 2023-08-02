@@ -83,7 +83,7 @@ const NodeDesc = ({ data, ID }) => {
                 },
               }}
             >
-              {node.group && "None"}
+              {node.group || "None"}
             </Button>
           </div>
         </Typography>

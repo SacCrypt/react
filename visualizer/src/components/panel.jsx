@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import "../static/css/panel.css";
 import { Box, Button, MenuItem, Modal, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { addEdge, addNode, addNodes, addEdges } from "../redux/";
+import { addEdge, addNode, addNodes, addEdges, editNode } from "../redux/";
 import { saveAs } from "file-saver";
 
 const Panel = ({ handleClean }) => {
@@ -14,14 +14,16 @@ const Panel = ({ handleClean }) => {
     nodeDescription: "",
     edgeName: { from: "", to: "" },
     edgeWeight: "",
+    edgeDirection: "",
     group: "",
+    newNodeName: "",
   };
   const [inputObject, setInputObject] = useState(initialState);
-  const [nodeIdentifier, setNodeIdentifier] = useState(1);
-  const [edgeIdentifier, setEdgeIdentifier] = useState(1);
+
   const [activeModal, setActiveModal] = useState("");
   const [displayEdit, setDisplayEdit] = useState(false);
   const state = useSelector((state) => state);
+
   const { nodes, edges } = state.present;
   const dispatch = useDispatch();
 
@@ -33,10 +35,17 @@ const Panel = ({ handleClean }) => {
         setVisited(true);
         return;
       }
-      setNodeIdentifier((id) => id + 1);
+      if (displayEdit) {
+        const { edgeName, edgeWeight, ...filteredObject } = inputObject;
+        dispatch(editNode(filteredObject));
+        setInputObject(initialState);
+        setOpen(false);
+
+        return;
+      }
+
       dispatch(
         addNode({
-          id: nodeIdentifier,
           label: inputObject.nodeName,
           description: inputObject.nodeDescription,
           group: inputObject.group,
@@ -46,14 +55,34 @@ const Panel = ({ handleClean }) => {
       setOpen(false);
     } else {
       if (inputObject.edgeName.from && inputObject.edgeName.to) {
-        setEdgeIdentifier((id) => id + 1);
-        dispatch(
-          addEdge({
-            id: edgeIdentifier,
-            edge: inputObject.edgeName,
-            edgeWeight: inputObject.edgeWeight,
-          })
-        );
+        if (inputObject.edgeDirection === "Bidirectional") {
+          dispatch(
+            addEdge({
+              edge: inputObject.edgeName,
+              edgeWeight: inputObject.edgeWeight,
+              edgeDirection: "Straight",
+            })
+          );
+
+          dispatch(
+            addEdge({
+              edge: {
+                from: inputObject.edgeName.to,
+                to: inputObject.edgeName.from,
+              },
+              edgeWeight: "",
+              edgeDirection: "Straight",
+            })
+          );
+        } else {
+          dispatch(
+            addEdge({
+              edge: inputObject.edgeName,
+              edgeWeight: inputObject.edgeWeight,
+              edgeDirection: inputObject.edgeDirection,
+            })
+          );
+        }
         setInputObject(initialState);
         setOpen(false);
       } else {
@@ -89,12 +118,7 @@ const Panel = ({ handleClean }) => {
       reader.onload = () => {
         try {
           const parsedData = JSON.parse(reader.result);
-          setNodeIdentifier(
-            (identifier) => identifier + parsedData.nodes.length
-          );
-          setEdgeIdentifier(
-            (identifier) => identifier + parsedData.edges.length
-          );
+
           dispatch(addNodes(parsedData.nodes));
           dispatch(addEdges(parsedData.edges));
         } catch (error) {
@@ -107,7 +131,6 @@ const Panel = ({ handleClean }) => {
       console.error("Not a JSON file.");
     }
   };
-
   return (
     <div className='mainContainer'>
       <svg
@@ -192,8 +215,22 @@ const Panel = ({ handleClean }) => {
               justifyContent: "space-between",
             }}
           >
-            <p onClick={() => setDisplayEdit(false)}> Create {activeModal}</p>
-            <p onClick={() => setDisplayEdit(true)}> Edit {activeModal} </p>
+            <p
+              onClick={() => {
+                setInputObject(initialState);
+                setDisplayEdit(false);
+              }}
+            >
+              Create {activeModal}
+            </p>
+            <p
+              onClick={() => {
+                setInputObject(initialState);
+                setDisplayEdit(true);
+              }}
+            >
+              Edit {activeModal}
+            </p>
           </Box>
           {activeModal === "Node" ? (
             !displayEdit ? (
@@ -241,21 +278,52 @@ const Panel = ({ handleClean }) => {
                 />
               </Box>
             ) : (
-              <Box>
-                <TextField required label='Node Name' />
-                <TextField label='New Node Name' />
-                <TextField label='New Node Description' />
-                <TextField label='New Node Group' />
+              <Box
+                display='flex'
+                flexWrap='wrap'
+                justifyContent='center'
+                gap='1em'
+              >
+                <TextField
+                  value={inputObject.nodeName}
+                  required
+                  label='Node Name'
+                  onChange={(e) =>
+                    setInputObject({ ...inputObject, nodeName: e.target.value })
+                  }
+                />
+                <TextField
+                  value={inputObject.newNodeName}
+                  label='New Node Name'
+                  onChange={(e) =>
+                    setInputObject({
+                      ...inputObject,
+                      newNodeName: e.target.value,
+                    })
+                  }
+                />
+                <TextField
+                  value={inputObject.nodeDescription}
+                  label='New Node Description'
+                  onChange={(e) =>
+                    setInputObject({
+                      ...inputObject,
+                      nodeDescription: e.target.value,
+                    })
+                  }
+                />
+                <TextField
+                  onChange={(e) =>
+                    setInputObject({ ...inputObject, group: e.target.value })
+                  }
+                  value={inputObject.group}
+                  label='New Node Group'
+                />
               </Box>
             )
           ) : !displayEdit ? (
-            <Box
-              display='flex'
-              flexDirection='column'
-              alignItems='center'
-              gap='1em'
-            >
-              <Box display='flex' justifyContent='space-between' gap='2em'>
+            <Box display='flex' flexDirection='column' gap='1em'>
+              <Box display='flex' justifyContent='space-evenly'>
                 <TextField
                   required
                   label='From'
@@ -284,16 +352,49 @@ const Panel = ({ handleClean }) => {
                   error={visited && !inputObject.edgeName.to}
                 />
               </Box>
-              <TextField
-                label='Weight'
-                onChange={(e) => {
-                  return setInputObject({
-                    ...inputObject,
-                    edgeWeight: e.target.value,
-                  });
-                }}
-                value={inputObject.edgeWeight}
-              />
+              <Box
+                display='flex'
+                alignItems='center'
+                justifyContent='space-evenly'
+              >
+                <TextField
+                  label='Weight'
+                  onChange={(e) => {
+                    return setInputObject({
+                      ...inputObject,
+                      edgeWeight: e.target.value,
+                    });
+                  }}
+                  value={inputObject.edgeWeight}
+                />
+                <TextField
+                  sx={{
+                    width: "40%",
+                  }}
+                  select
+                  label='Direction'
+                  value={inputObject.edgeDirection}
+                >
+                  {["Straight", "Reversed", "Bidirectional", "Undirected"].map(
+                    (value, index) => {
+                      return (
+                        <MenuItem
+                          key={index}
+                          value={value}
+                          onClick={(e) =>
+                            setInputObject({
+                              ...inputObject,
+                              edgeDirection: e.target.firstChild.data,
+                            })
+                          }
+                        >
+                          {value}
+                        </MenuItem>
+                      );
+                    }
+                  )}
+                </TextField>
+              </Box>
             </Box>
           ) : (
             <TextField />
@@ -326,8 +427,8 @@ const Panel = ({ handleClean }) => {
                 },
               }}
               onClick={() => {
-                setDisplayEdit(false);
                 handleAdd();
+                setDisplayEdit(false);
               }}
               className='okButton'
               variant='text'

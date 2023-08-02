@@ -6,4 +6,5 @@ export const types = {
   CLEAR_NETWORK: "CLEAR_NETWORK",
   ADD_NODES: "ADD_NODES",
   ADD_EDGES: "ADD_EDGES",
+  EDIT_NODE: "EDIT_NODE",
 };

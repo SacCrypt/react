@@ -59,3 +59,10 @@ export const redo = () => {
     type: types.REDO,
   };
 };
+
+export const editNode = (nodeName) => {
+  return {
+    type: types.EDIT_NODE,
+    payload: nodeName,
+  };
+};
