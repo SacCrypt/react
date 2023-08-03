@@ -22,19 +22,22 @@ const networkReducer = (state = initialState, action) => {
         ],
       };
     case types.DELETE_NODE:
-      const index = state.nodes.indexOf(action.payload.id);
-      if (index === -1) {
+      const index = state.nodes.find(
+        (node) => node.label === action.payload.nodeName
+      );
+      if (!index) {
         return state;
       } else {
         return {
           ...state,
-          nodes: state.nodes.filter((item) => item !== action.payload),
+          nodes: state.nodes.filter((item) => {
+            return item.label !== action.payload.nodeName;
+          }),
         };
       }
     case types.ADD_EDGE:
       const { edge, edgeWeight, edgeDirection } = action.payload;
       let direction;
-
       switch (edgeDirection) {
         case "Straight":
           direction = "to";
@@ -102,6 +105,33 @@ const networkReducer = (state = initialState, action) => {
           return node;
         }),
       };
+    case types.EDIT_EDGE: {
+      const { edgeWeight, edgeDirection, edgeName } = action.payload;
+      console.log(edgeName);
+      let direction;
+      switch (edgeDirection) {
+        case "Straight":
+          direction = "to";
+        case "Reversed":
+          direction = "from";
+      }
+      const id_from = state.nodes.find(
+        (node) => node.label === edgeName.from
+      ).id;
+      const id_to = state.nodes.find((node) => node.label === edgeName.to).id;
+      return {
+        ...state,
+        edges: state.edges.map((edge) => {
+          if (edge.from === id_from && edge.to === id_to) {
+            return {
+              ...edge,
+              arrows: direction,
+              label: edgeWeight,
+            };
+          }
+        }),
+      };
+    }
     default:
       return state;
   }

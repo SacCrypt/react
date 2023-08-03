@@ -1,9 +1,27 @@
 import React, { useRef, useState } from "react";
 import "../static/css/panel.css";
-import { Box, Button, MenuItem, Modal, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  Modal,
+  TextField,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { addEdge, addNode, addNodes, addEdges, editNode } from "../redux/";
+import {
+  addEdge,
+  addNode,
+  addNodes,
+  addEdges,
+  editNode,
+  editEdge,
+  deleteNode,
+  deleteEdge,
+} from "../redux/";
 import { saveAs } from "file-saver";
+import { pink } from "@mui/material/colors";
 
 const Panel = ({ handleClean }) => {
   const [open, setOpen] = useState(false);
@@ -17,6 +35,7 @@ const Panel = ({ handleClean }) => {
     edgeDirection: "",
     group: "",
     newNodeName: "",
+    delete: false,
   };
   const [inputObject, setInputObject] = useState(initialState);
 
@@ -35,61 +54,86 @@ const Panel = ({ handleClean }) => {
         setVisited(true);
         return;
       }
+      if (inputObject.delete) {
+        const { nodeName } = inputObject;
+        dispatch(deleteNode({ nodeName }));
+        setInputObject(initialState);
+        setOpen(false);
+        return;
+      }
       if (displayEdit) {
         const { edgeName, edgeWeight, ...filteredObject } = inputObject;
         dispatch(editNode(filteredObject));
-        setInputObject(initialState);
-        setOpen(false);
-
-        return;
+      } else {
+        dispatch(
+          addNode({
+            label: inputObject.nodeName,
+            description: inputObject.nodeDescription,
+            group: inputObject.group,
+          })
+        );
       }
-
-      dispatch(
-        addNode({
-          label: inputObject.nodeName,
-          description: inputObject.nodeDescription,
-          group: inputObject.group,
-        })
-      );
-      setInputObject(initialState);
-      setOpen(false);
     } else {
       if (inputObject.edgeName.from && inputObject.edgeName.to) {
-        if (inputObject.edgeDirection === "Bidirectional") {
-          dispatch(
-            addEdge({
-              edge: inputObject.edgeName,
-              edgeWeight: inputObject.edgeWeight,
-              edgeDirection: "Straight",
-            })
-          );
-
-          dispatch(
-            addEdge({
-              edge: {
-                from: inputObject.edgeName.to,
-                to: inputObject.edgeName.from,
-              },
-              edgeWeight: "",
-              edgeDirection: "Straight",
-            })
-          );
+        if (displayEdit) {
+          const { edgeName, edgeWeight, edgeDirection } = inputObject;
+          if (edgeDirection === "Bidirectional") {
+            dispatch(
+              editEdge({
+                edge: edgeName,
+                edgeWeight: edgeWeight,
+                edgeDirection: "to",
+              })
+            );
+            dispatch(
+              editEdge({
+                edge: {
+                  from: edgeName.to,
+                  to: edgeName.from,
+                },
+                edgeWeight: "",
+                edgeDirection: "to",
+              })
+            );
+          } else {
+            dispatch(editEdge({ edgeName, edgeWeight, edgeDirection }));
+          }
         } else {
-          dispatch(
-            addEdge({
-              edge: inputObject.edgeName,
-              edgeWeight: inputObject.edgeWeight,
-              edgeDirection: inputObject.edgeDirection,
-            })
-          );
+          if (inputObject.edgeDirection === "Bidirectional") {
+            dispatch(
+              addEdge({
+                edge: inputObject.edgeName,
+                edgeWeight: inputObject.edgeWeight,
+                edgeDirection: "Straight",
+              })
+            );
+            dispatch(
+              addEdge({
+                edge: {
+                  from: inputObject.edgeName.to,
+                  to: inputObject.edgeName.from,
+                },
+                edgeWeight: "",
+                edgeDirection: "Straight",
+              })
+            );
+          } else {
+            dispatch(
+              addEdge({
+                edge: inputObject.edgeName,
+                edgeWeight: inputObject.edgeWeight,
+                edgeDirection: inputObject.edgeDirection,
+              })
+            );
+          }
         }
-        setInputObject(initialState);
-        setOpen(false);
       } else {
         setVisited(true);
         return;
       }
     }
+    setInputObject(initialState);
+    setOpen(false);
   };
 
   const saveFile = () => {
@@ -131,6 +175,7 @@ const Panel = ({ handleClean }) => {
       console.error("Not a JSON file.");
     }
   };
+
   return (
     <div className='mainContainer'>
       <svg
@@ -211,11 +256,11 @@ const Panel = ({ handleClean }) => {
               display: "flex",
               alignItems: "center",
               padding: "1em",
-              cursor: "pointer",
               justifyContent: "space-between",
             }}
           >
             <p
+              style={{ cursor: "pointer" }}
               onClick={() => {
                 setInputObject(initialState);
                 setDisplayEdit(false);
@@ -224,6 +269,7 @@ const Panel = ({ handleClean }) => {
               Create {activeModal}
             </p>
             <p
+              style={{ cursor: "pointer" }}
               onClick={() => {
                 setInputObject(initialState);
                 setDisplayEdit(true);
@@ -319,11 +365,32 @@ const Panel = ({ handleClean }) => {
                   value={inputObject.group}
                   label='New Node Group'
                 />
+                <Box display='flex' width={"50%"} justifyContent='center'>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={() =>
+                          setInputObject({
+                            ...inputObject,
+                            delete: !inputObject.delete,
+                          })
+                        }
+                        sx={{
+                          color: pink[800],
+                          "&.Mui-checked": {
+                            color: pink[600],
+                          },
+                        }}
+                      />
+                    }
+                    label='Delete Node'
+                  />
+                </Box>
               </Box>
             )
           ) : !displayEdit ? (
             <Box display='flex' flexDirection='column' gap='1em'>
-              <Box display='flex' justifyContent='space-evenly'>
+              <Box display='flex' justifyContent='space-around'>
                 <TextField
                   required
                   label='From'
@@ -355,7 +422,7 @@ const Panel = ({ handleClean }) => {
               <Box
                 display='flex'
                 alignItems='center'
-                justifyContent='space-evenly'
+                justifyContent='space-around'
               >
                 <TextField
                   label='Weight'
@@ -397,7 +464,95 @@ const Panel = ({ handleClean }) => {
               </Box>
             </Box>
           ) : (
-            <TextField />
+            <Box>
+              <Box display='flex' justifyContent='space-around'>
+                <TextField
+                  value={inputObject.edgeName.from}
+                  onChange={(e) =>
+                    setInputObject({
+                      ...inputObject,
+                      edgeName: {
+                        ...inputObject.edgeName,
+                        from: e.target.value,
+                      },
+                    })
+                  }
+                  required
+                  label='From Node'
+                />
+                <TextField
+                  value={inputObject.edgeName.to}
+                  onChange={(e) =>
+                    setInputObject({
+                      ...inputObject,
+                      edgeName: { ...inputObject.edgeName, to: e.target.value },
+                    })
+                  }
+                  required
+                  label='To Node'
+                />
+              </Box>
+              <Box marginTop='1em' display='flex' justifyContent='space-around'>
+                <TextField
+                  label='New Weight'
+                  value={inputObject.edgeWeight}
+                  onChange={(e) =>
+                    setInputObject({
+                      ...inputObject,
+                      edgeWeight: e.target.value,
+                    })
+                  }
+                />
+                <TextField
+                  sx={{
+                    width: "40%",
+                  }}
+                  select
+                  label='Direction'
+                  value={inputObject.edgeDirection}
+                >
+                  {["Straight", "Reversed", "Bidirectional", "Undirected"].map(
+                    (value, index) => {
+                      return (
+                        <MenuItem
+                          key={index}
+                          value={value}
+                          onClick={(e) =>
+                            setInputObject({
+                              ...inputObject,
+                              edgeDirection: e.target.firstChild.data,
+                            })
+                          }
+                        >
+                          {value}
+                        </MenuItem>
+                      );
+                    }
+                  )}
+                </TextField>
+              </Box>
+              <Box display='flex' marginTop='1em' justifyContent='center'>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={() =>
+                        setInputObject({
+                          ...inputObject,
+                          delete: !inputObject.delete,
+                        })
+                      }
+                      sx={{
+                        color: pink[800],
+                        "&.Mui-checked": {
+                          color: pink[600],
+                        },
+                      }}
+                    />
+                  }
+                  label='Delete Edge'
+                />
+              </Box>
+            </Box>
           )}
 
           <Box padding='2em' display='flex' justifyContent='flex-end'>

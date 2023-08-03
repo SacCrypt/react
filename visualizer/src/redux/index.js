@@ -7,4 +7,5 @@ export {
   addNodes,
   addEdges,
   editNode,
+  editEdge,
 } from "./network/networkActions";

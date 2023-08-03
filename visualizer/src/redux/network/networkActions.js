@@ -66,3 +66,10 @@ export const editNode = (nodeName) => {
     payload: nodeName,
   };
 };
+
+export const editEdge = (edge) => {
+  return {
+    type: types.EDIT_EDGE,
+    payload: edge,
+  };
+};
