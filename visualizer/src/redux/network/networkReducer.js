@@ -10,6 +10,7 @@ const initialState = {
 const networkReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.ADD_NODE:
+      console.log(action.payload);
       return {
         ...state,
         nodeIdentifier: state.nodeIdentifier + 1,
@@ -42,12 +43,14 @@ const networkReducer = (state = initialState, action) => {
         case "Straight":
           direction = "to";
           break;
-
         case "Reversed":
           direction = "from";
           break;
         case "Undirected":
           direction = "";
+          break;
+        case "Bidirectional":
+          direction = "to;from";
           break;
         default:
           direction = "";
@@ -69,27 +72,38 @@ const networkReducer = (state = initialState, action) => {
         edges: [...state.edges, updatedEdge],
         edgeIdentifier: state.edgeIdentifier + 1,
       };
-    case types.DELETE_EDGE:
+    case types.DELETE_EDGE: {
+      const { edge } = action.payload;
+
+      const id_from = state.nodes.find((node) => node.label === edge.from).id;
+      const id_to = state.nodes.find((node) => node.label === edge.to).id;
+      console.log(id_from, id_to);
       return {
         ...state,
-        edges: state.edges.filter((item) => item !== action.payload),
+        edges: state.edges.filter((item) => {
+          return item.from !== id_from || item.to !== id_to;
+        }),
       };
+    }
     case types.ADD_NODES:
       return {
         ...state,
         nodes: action.payload,
+        nodeIdentifier: state.nodeIdentifier + action.payload.length,
       };
     case types.ADD_EDGES:
       return {
         ...state,
         edges: action.payload,
+        edgeIdentifier: state.edgeIdentifier + action.payload.length,
       };
     case types.CLEAR_NETWORK:
       return {
         ...initialState,
       };
     case types.EDIT_NODE:
-      const { nodeName, nodeDescription, group, newNodeName } = action.payload;
+      const { nodeName, nodeDescription, group, newNodeName, shape } =
+        action.payload;
       return {
         ...state,
         nodes: state.nodes.map((node) => {
@@ -100,6 +114,7 @@ const networkReducer = (state = initialState, action) => {
               label: newNodeName || node.label,
               group: group || node.group,
               description: nodeDescription || node.description,
+              shape: shape,
             };
           }
           return node;
@@ -107,14 +122,21 @@ const networkReducer = (state = initialState, action) => {
       };
     case types.EDIT_EDGE: {
       const { edgeWeight, edgeDirection, edgeName } = action.payload;
-      console.log(edgeName);
       let direction;
       switch (edgeDirection) {
         case "Straight":
           direction = "to";
+          break;
         case "Reversed":
           direction = "from";
+          break;
+        case "Bidirectional":
+          direction = "to;from";
+          break;
+        default:
+          direction = "";
       }
+
       const id_from = state.nodes.find(
         (node) => node.label === edgeName.from
       ).id;
@@ -129,6 +151,7 @@ const networkReducer = (state = initialState, action) => {
               label: edgeWeight,
             };
           }
+          return edge;
         }),
       };
     }

@@ -36,6 +36,8 @@ const Panel = ({ handleClean }) => {
     group: "",
     newNodeName: "",
     delete: false,
+    shape: "dot",
+    size: 25,
   };
   const [inputObject, setInputObject] = useState(initialState);
 
@@ -70,62 +72,36 @@ const Panel = ({ handleClean }) => {
             label: inputObject.nodeName,
             description: inputObject.nodeDescription,
             group: inputObject.group,
+            shape: inputObject.shape,
+            size: inputObject.size,
           })
         );
       }
     } else {
       if (inputObject.edgeName.from && inputObject.edgeName.to) {
+        const { edgeName, edgeWeight, edgeDirection } = inputObject;
+
         if (displayEdit) {
-          const { edgeName, edgeWeight, edgeDirection } = inputObject;
-          if (edgeDirection === "Bidirectional") {
+          if (inputObject.delete) {
             dispatch(
-              editEdge({
+              deleteEdge({
                 edge: edgeName,
-                edgeWeight: edgeWeight,
-                edgeDirection: "to",
               })
             );
-            dispatch(
-              editEdge({
-                edge: {
-                  from: edgeName.to,
-                  to: edgeName.from,
-                },
-                edgeWeight: "",
-                edgeDirection: "to",
-              })
-            );
-          } else {
-            dispatch(editEdge({ edgeName, edgeWeight, edgeDirection }));
+            setInputObject(initialState);
+            setOpen(false);
+            return;
           }
+          console.log("ran");
+          dispatch(editEdge({ edgeName, edgeWeight, edgeDirection }));
         } else {
-          if (inputObject.edgeDirection === "Bidirectional") {
-            dispatch(
-              addEdge({
-                edge: inputObject.edgeName,
-                edgeWeight: inputObject.edgeWeight,
-                edgeDirection: "Straight",
-              })
-            );
-            dispatch(
-              addEdge({
-                edge: {
-                  from: inputObject.edgeName.to,
-                  to: inputObject.edgeName.from,
-                },
-                edgeWeight: "",
-                edgeDirection: "Straight",
-              })
-            );
-          } else {
-            dispatch(
-              addEdge({
-                edge: inputObject.edgeName,
-                edgeWeight: inputObject.edgeWeight,
-                edgeDirection: inputObject.edgeDirection,
-              })
-            );
-          }
+          dispatch(
+            addEdge({
+              edge: inputObject.edgeName,
+              edgeWeight: inputObject.edgeWeight,
+              edgeDirection: inputObject.edgeDirection,
+            })
+          );
         }
       } else {
         setVisited(true);
@@ -163,8 +139,8 @@ const Panel = ({ handleClean }) => {
         try {
           const parsedData = JSON.parse(reader.result);
 
-          dispatch(addNodes(parsedData.nodes));
-          dispatch(addEdges(parsedData.edges));
+          dispatch(addNodes(parsedData.present.nodes));
+          dispatch(addEdges(parsedData.present.edges));
         } catch (error) {
           console.error("Error parsing JSON:", error);
         }
@@ -281,7 +257,13 @@ const Panel = ({ handleClean }) => {
           {activeModal === "Node" ? (
             !displayEdit ? (
               <Box>
-                <Box display='flex' justifyContent='space-around'>
+                <Box
+                  sx={{
+                    padding: "5px 20px",
+                  }}
+                  display='flex'
+                  gap='1em'
+                >
                   <TextField
                     className='nodeName'
                     required
@@ -305,23 +287,74 @@ const Panel = ({ handleClean }) => {
                     }
                     value={inputObject.group}
                   />
+                  <TextField
+                    sx={{
+                      width: "40%",
+                    }}
+                    select
+                    label='Shape'
+                    value={inputObject.shape}
+                  >
+                    {[
+                      "ellipse",
+                      "circle",
+                      "database",
+                      "box",
+                      "text",
+                      "dot",
+                      "image",
+                      "circularImage",
+                      "diamond",
+                      "star",
+                      "triangle",
+                      "triangleDown",
+                      "hexagon",
+                      "square",
+                      "icon",
+                      "custom",
+                    ].map((value, index) => {
+                      return (
+                        <MenuItem
+                          key={index}
+                          value={value}
+                          onClick={(e) =>
+                            setInputObject({
+                              ...inputObject,
+                              shape: e.target.firstChild.data,
+                            })
+                          }
+                        >
+                          {value}
+                        </MenuItem>
+                      );
+                    })}
+                  </TextField>
                 </Box>
-                <TextField
-                  multiline
-                  sx={{
-                    width: "100%",
-                    margin: "auto",
-                    padding: "2%",
-                  }}
-                  placeholder='Description'
-                  value={inputObject.nodeDescription}
-                  onChange={(e) =>
-                    setInputObject({
-                      ...inputObject,
-                      nodeDescription: e.target.value,
-                    })
-                  }
-                />
+                <Box display='flex' padding='20px'>
+                  <TextField
+                    value={inputObject.size}
+                    onChange={(e) =>
+                      setInputObject({ ...inputObject, size: e.target.value })
+                    }
+                    label='Size'
+                    type='number'
+                  />
+                  <TextField
+                    multiline
+                    sx={{
+                      margin: "auto",
+                      padding: "0 20px",
+                    }}
+                    placeholder='Description'
+                    value={inputObject.nodeDescription}
+                    onChange={(e) =>
+                      setInputObject({
+                        ...inputObject,
+                        nodeDescription: e.target.value,
+                      })
+                    }
+                  />
+                </Box>
               </Box>
             ) : (
               <Box
@@ -365,6 +398,48 @@ const Panel = ({ handleClean }) => {
                   value={inputObject.group}
                   label='New Node Group'
                 />
+                <TextField
+                  sx={{
+                    width: "50%",
+                    marginTop: "5px",
+                  }}
+                  select
+                  label='Shape'
+                  value={inputObject.shape}
+                >
+                  {[
+                    "ellipse",
+                    "circle",
+                    "database",
+                    "box",
+                    "text",
+                    "image",
+                    "circularImage",
+                    "diamond",
+                    "star",
+                    "triangle",
+                    "triangleDown",
+                    "hexagon",
+                    "square",
+                    "icon",
+                    "custom",
+                  ].map((value, index) => {
+                    return (
+                      <MenuItem
+                        key={index}
+                        value={value}
+                        onClick={(e) =>
+                          setInputObject({
+                            ...inputObject,
+                            shape: e.target.firstChild.data,
+                          })
+                        }
+                      >
+                        {value}
+                      </MenuItem>
+                    );
+                  })}
+                </TextField>
                 <Box display='flex' width={"50%"} justifyContent='center'>
                   <FormControlLabel
                     control={
@@ -555,7 +630,12 @@ const Panel = ({ handleClean }) => {
             </Box>
           )}
 
-          <Box padding='2em' display='flex' justifyContent='flex-end'>
+          <Box
+            paddingBottom='1.25em'
+            paddingRight='1em'
+            display='flex'
+            justifyContent='flex-end'
+          >
             <Button
               sx={{
                 fontSize: "14px",
