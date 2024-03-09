@@ -5,6 +5,8 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  IconButton,
+  InputAdornment,
   MenuItem,
   Modal,
   TextField,
@@ -22,15 +24,29 @@ import {
 } from "../redux/";
 import { saveAs } from "file-saver";
 import { pink } from "@mui/material/colors";
+import ImageIcon from "@mui/icons-material/Image";
 
 const Panel = ({ handleClean }) => {
   const [open, setOpen] = useState(false);
   const [visited, setVisited] = useState(false);
-
+  const [toggleImage, setToggleImage] = useState(false);
   const initialState = {
     nodeName: "",
     nodeDescription: "",
-    edgeName: { from: "", to: "" },
+    edgeName: {
+      from: "",
+      to: "",
+      arrows: {
+        middle: {
+          enable: false,
+          imageHeight: 32,
+          imageWidth: 32,
+          type: "image",
+          scaleFactor: 1,
+          src: "",
+        },
+      },
+    },
     edgeWeight: "",
     edgeDirection: "",
     group: "",
@@ -39,8 +55,8 @@ const Panel = ({ handleClean }) => {
     shape: "dot",
     size: 25,
   };
-  const [inputObject, setInputObject] = useState(initialState);
 
+  const [inputObject, setInputObject] = useState(initialState);
   const [activeModal, setActiveModal] = useState("");
   const [displayEdit, setDisplayEdit] = useState(false);
   const state = useSelector((state) => state);
@@ -92,7 +108,6 @@ const Panel = ({ handleClean }) => {
             setOpen(false);
             return;
           }
-          console.log("ran");
           dispatch(editEdge({ edgeName, edgeWeight, edgeDirection }));
         } else {
           dispatch(
@@ -500,14 +515,45 @@ const Panel = ({ handleClean }) => {
                 justifyContent='space-around'
               >
                 <TextField
-                  label='Weight'
+                  sx={{ maxWidth: "41%" }}
+                  label={toggleImage ? "Image Source" : "Weight"}
                   onChange={(e) => {
-                    return setInputObject({
-                      ...inputObject,
-                      edgeWeight: e.target.value,
-                    });
+                    !toggleImage
+                      ? setInputObject({
+                          ...inputObject,
+                          edgeWeight: e.target.value,
+                        })
+                      : setInputObject({
+                          ...inputObject,
+                          edgeName: {
+                            ...inputObject.edgeName,
+                            arrows: {
+                              ...inputObject.edgeName.arrows,
+                              middle: {
+                                ...inputObject.edgeName.arrows.middle,
+                                src: e.target.value,
+                                enabled: true,
+                              },
+                            },
+                          },
+                        });
                   }}
-                  value={inputObject.edgeWeight}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment>
+                        <IconButton
+                          onClick={() => setToggleImage((prev) => !prev)}
+                        >
+                          <ImageIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  value={
+                    toggleImage
+                      ? inputObject.edgeName.arrows.middle.src
+                      : inputObject.edgeWeight
+                  }
                 />
                 <TextField
                   sx={{
@@ -569,15 +615,45 @@ const Panel = ({ handleClean }) => {
               </Box>
               <Box marginTop='1em' display='flex' justifyContent='space-around'>
                 <TextField
-                  label='New Weight'
+                  sx={{ maxWidth: "41%" }}
+                  label={toggleImage ? "New Image Source" : "New Weight"}
                   value={inputObject.edgeWeight}
-                  onChange={(e) =>
-                    setInputObject({
-                      ...inputObject,
-                      edgeWeight: e.target.value,
-                    })
-                  }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment>
+                        <IconButton
+                          onClick={() => setToggleImage((prev) => !prev)}
+                        >
+                          <ImageIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  onChange={(e) => {
+                    !toggleImage
+                      ? setInputObject({
+                          ...inputObject,
+                          edgeWeight: e.target.value,
+                        })
+                      : setInputObject({
+                          ...inputObject,
+                          edgeName: {
+                            ...inputObject.edgeName,
+                            arrows: {
+                              ...inputObject.edgeName.arrows,
+                              middle: {
+                                enabled: true,
+                                imageHeight: 32,
+                                imageWidth: 32,
+                                src: e.target.value,
+                                type: "image",
+                              },
+                            },
+                          },
+                        });
+                  }}
                 />
+
                 <TextField
                   sx={{
                     width: "40%",
@@ -635,6 +711,7 @@ const Panel = ({ handleClean }) => {
             paddingRight='1em'
             display='flex'
             justifyContent='flex-end'
+            marginTop='.5em'
           >
             <Button
               sx={{

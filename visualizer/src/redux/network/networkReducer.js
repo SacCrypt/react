@@ -53,7 +53,7 @@ const networkReducer = (state = initialState, action) => {
           direction = "to;from";
           break;
         default:
-          direction = "";
+          direction = edge.arrows;
       }
       const updatedEdge = {
         ...edge,
@@ -147,8 +147,8 @@ const networkReducer = (state = initialState, action) => {
           if (edge.from === id_from && edge.to === id_to) {
             return {
               ...edge,
-              arrows: direction,
-              label: edgeWeight,
+              arrows: edgeDirection !== "" ? direction : edge.arrows,
+              label: edgeWeight !== "" ? edgeWeight : edge.label,
             };
           }
           return edge;
